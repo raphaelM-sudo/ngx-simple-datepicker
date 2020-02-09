@@ -1,6 +1,10 @@
 {
   "extends": "../tslint.json",
   "rules": {
+    "variable-name": [
+      true,
+      "allow-leading-underscore"
+    ],
     "directive-selector": [
       true,
       "attribute",
