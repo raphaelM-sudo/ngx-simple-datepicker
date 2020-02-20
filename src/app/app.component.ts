@@ -10,6 +10,8 @@ export class AppComponent implements OnInit {
   title = 'ngx-simple-datepicker';
   version = VERSION.full;
 
+  date: Date = null;
+
   ngOnInit() {
     // tslint:disable-next-line: no-console
     console.info(

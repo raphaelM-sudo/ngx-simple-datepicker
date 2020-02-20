@@ -1,4 +1,3 @@
-@import './variables';
 @import '~@nutrify/ngx-simple-select/scss/styles';
 
 .simple-datepicker {
@@ -23,5 +22,11 @@
   .simple-option-content {
     margin-left: 5px;
     padding-right: 5px;
+  }
+}
+
+.simple-datepicker-invalid {
+  .simple-select {
+    @include simple-invalid;
   }
 }
