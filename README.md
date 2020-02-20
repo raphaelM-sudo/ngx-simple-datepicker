@@ -1,4 +1,4 @@
-# ngx-simple-datepicker
+# Ngx Simple Datepicker
 
 Simple and lightweight, yet customizable date picker for Angular
 
@@ -69,14 +69,14 @@ Check out the [source code](https://github.com/raphaelM-sudo/ngx-simple-datepick
 
 ##### Inputs
 
-| Property         | Default | Type                                   | Description                                                                  |
-| ---------------- | ------- | -------------------------------------- | ---------------------------------------------------------------------------- |
-| min              |         | Date \| string                         | Optional min date value *                                                    |
-| max              |         | Date \| string                         | Optional max date value *                                                    |
-| dayPlaceholder   |         | string                                 | Optional placeholder for the day select control                              |
-| monthPlaceholder |         | string                                 | Optional placeholder for the month select control                            |
-| yearPlaceholder  |         | string                                 | Optional placeholder for the year select control                             |
-| months           |         | [string, ...string[]] & { length: 12 } | Optional array of month names for multi language support                     |
+| Property         | Default | Type                                     | Description                                              |
+| ---------------- | ------- | ---------------------------------------- | -------------------------------------------------------- |
+| min              |         | `Date \| string`                         | Optional min date value *                                |
+| max              |         | `Date \| string`                         | Optional max date value *                                |
+| dayPlaceholder   |         | `string`                                 | Optional placeholder for the day select control          |
+| monthPlaceholder |         | `string`                                 | Optional placeholder for the month select control        |
+| yearPlaceholder  |         | `string`                                 | Optional placeholder for the year select control         |
+| months           |         | `[string, ...string[]] & { length: 12 }` | Optional array of month names for multi language support |
 
 <sub>*) If no value is entered the date wont be validated by default, but the select dropdown for the year will show a range of (-115) - (-16) from the current year.</sub>
 
