@@ -7,7 +7,9 @@
   display: inline-flex;
 
   .simple-select {
-    text-align: center;
+    * {
+      text-align: center;
+    }
     margin-right: $simple-select-padding;
   }
 
@@ -17,11 +19,6 @@
 
   .simple-datepicker-month {
     min-width: 40%;
-  }
-
-  .simple-option-content {
-    margin-left: 5px;
-    padding-right: 5px;
   }
 }
 
