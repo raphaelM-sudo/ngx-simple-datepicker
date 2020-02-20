@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "@nutrify/ngx-simple-datepicker",
+  "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Simple and lightweight, yet customizable date picker for Angular",
+  "peerDependencies": {
+    "@angular/core": "^9.0.0-0",
+    "@angular/common": "^9.0.0-0",
+    "@angular/material": "^9.0.0",
+    "@nutrify/ngx-simple-select": "latest"
+  },
+  "bugs": "https://github.com/raphaelM-sudo/ngx-simple-datepicker/issues",
+  "homepage": "https://github.com/raphaelM-sudo/ngx-simple-datepicker",
+  "repository": "raphaelM-sudo/ngx-simple-datepicker",
+  "license": "MIT",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/public-api.ts",
+      "umdModuleIds": {
+        "@nutrify/ngx-simple-select": "@nutrify/ngx-simple-select"
+      }
+    },
+    "dest": "../../dist/simple-datepicker"
+  },
+  "keywords": [
+    "angular",
+    "datepicker",
+    "ui-datepicker",
+    "date",
+    "angular2",
+    "simple"
+  ]
+}

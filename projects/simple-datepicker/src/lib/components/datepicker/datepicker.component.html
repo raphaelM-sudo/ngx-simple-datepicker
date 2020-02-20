@@ -1,0 +1,9 @@
+<simple-select [ngModel]="selectedDay" (ngModelChange)="updateDay($event)" [placeholder]="dayPlaceholder" class="simple-datepicker-day" [disabled]="disabled" [required]="required">
+  <simple-option *ngFor="let x of [].constructor(numberOfDays); let i = index" [value]="i+1">{{i+1}}</simple-option>
+</simple-select>
+<simple-select [(ngModel)]="selectedMonth" (ngModelChange)="update()" [placeholder]="monthPlaceholder" class="simple-datepicker-month" [disabled]="disabled" [required]="required">
+  <simple-option *ngFor="let x of [].constructor(12); let i = index" [value]="i+1">{{months[i]}}</simple-option>
+</simple-select>
+<simple-select [(ngModel)]="selectedYear" (ngModelChange)="update()" [placeholder]="yearPlaceholder" class="simple-datepicker-year" [disabled]="disabled" [required]="required">
+  <simple-option *ngFor="let x of [].constructor(endingYear - startingYear + 1); let i = index" [value]="endingYear-i">{{endingYear-i}}</simple-option>
+</simple-select>
