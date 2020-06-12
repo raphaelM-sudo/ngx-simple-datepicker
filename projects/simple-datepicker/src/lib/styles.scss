@@ -2,23 +2,20 @@
 
 .simple-datepicker {
   width: 100%;
-  height: 2rem;
-  line-height: 2rem;
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: 30% 40% 30%;
+  grid-gap: $simple-select-padding;
 
   .simple-select {
-    * {
-      text-align: center;
+    text-align: center;
+
+    .simple-select-selection, .simple-placeholder-text {
+      justify-content: center;
     }
-    margin-right: $simple-select-padding;
   }
 
-  .simple-datepicker-day, .simple-datepicker-year {
-    min-width: 30%;
-  }
-
-  .simple-datepicker-month {
-    min-width: 40%;
+  .simple-datepicker-day, .simple-datepicker-month, .simple-datepicker-year {
+    width: 100%;
   }
 }
 
