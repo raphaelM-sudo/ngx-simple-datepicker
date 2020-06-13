@@ -6,9 +6,15 @@ import * as sass from 'node-sass';
 import { join } from 'path';
 
 async function main() {
+
   // cleanup dist
-  del.sync(join(process.cwd(), '/dist'));
-  del.sync(join(process.cwd(), '/node_modules/@nutrify/ngx-simple-datepicker'));
+  try {
+    del.sync(join(process.cwd(), '/dist'));
+    del.sync(join(process.cwd(), '/node_modules/@nutrify/ngx-simple-datepicker'));
+  } catch (e) {
+    // tslint:disable-next-line: no-console
+    console.info('Ignoring: Could not delete previous build.');
+  }
 
   await ngPackagr()
     .forProject(join(process.cwd(), 'projects/simple-datepicker/package.json'))
