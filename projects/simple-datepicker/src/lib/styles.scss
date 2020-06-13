@@ -4,13 +4,14 @@
   width: 100%;
   display: inline-grid;
   grid-template-columns: 30% 40% 30%;
-  grid-gap: $simple-select-padding;
+  grid-gap: $simple-select-margin;
 
   .simple-select {
     text-align: center;
 
     .simple-select-selection, .simple-placeholder-text {
       justify-content: center;
+      margin: 0;
     }
   }
 
