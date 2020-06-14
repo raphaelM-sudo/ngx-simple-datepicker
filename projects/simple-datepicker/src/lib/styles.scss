@@ -3,7 +3,7 @@
 .simple-datepicker {
   width: 100%;
   display: inline-grid;
-  grid-template-columns: 30% 40% 30%;
+  grid-template-columns: 1fr 40% 1fr;
   grid-gap: $simple-select-margin;
 
   .simple-select {
