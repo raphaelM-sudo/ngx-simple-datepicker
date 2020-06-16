@@ -1,13 +1,23 @@
 @import 'node_modules/@nutrify/ngx-simple-select/scss/styles';
 
+$simple-datepicker-min-width:   15em !default;
+$simple-datepicker-min-height:  2em !default;
+
 .simple-datepicker {
-  width: 100%;
   display: inline-grid;
   grid-template-columns: 1fr 40% 1fr;
   grid-gap: $simple-select-margin;
 
+  width: 100%;
+  min-width: $simple-datepicker-min-width;
+  height: $simple-datepicker-min-height;
+  min-height: $simple-datepicker-min-height;
+  line-height: $simple-datepicker-min-height;
+
   .simple-select {
     text-align: center;
+    height: inherit;
+    line-height: inherit;
 
     .simple-select-selection, .simple-placeholder-text {
       justify-content: center;
