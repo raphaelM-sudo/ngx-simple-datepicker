@@ -2,17 +2,17 @@ import * as del from 'del';
 import * as fs from 'fs';
 import { copySync } from 'fs-extra';
 import { ngPackagr } from 'ng-packagr';
-import * as sass from 'node-sass';
+import * as sass from 'sass';
 import { join } from 'path';
 
-async function main() {
+const main = async () => {
 
   // cleanup dist
   try {
     del.sync(join(process.cwd(), '/dist'));
     del.sync(join(process.cwd(), '/node_modules/@nutrify/ngx-simple-datepicker'));
   } catch (e) {
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     console.info('Ignoring: Could not delete previous build.');
   }
 
@@ -57,7 +57,7 @@ async function main() {
     join(process.cwd(), '/dist/simple-datepicker'),
     join(process.cwd(), '/node_modules/@nutrify/ngx-simple-datepicker')
   );
-}
+};
 
 main()
   .then(() => console.log('success'))

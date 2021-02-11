@@ -25,6 +25,7 @@ class SimpleDatepickerBase {
               public ngControl: NgControl) {}
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const _SimpleDatepickerMixinBase:
   CanDisableCtor &
   CanUpdateErrorStateCtor &
@@ -37,7 +38,7 @@ const _SimpleDatepickerMixinBase:
   inputs: ['disabled'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  // tslint:disable-next-line: use-host-property-decorator
+  // eslint-disable-next-line
   host: {
     '[attr.id]': 'id',
     class: 'simple-datepicker',
@@ -53,7 +54,6 @@ const _SimpleDatepickerMixinBase:
 export class DatepickerComponent extends _SimpleDatepickerMixinBase
 implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Validator, OnDestroy {
 
-  @Input() value: Date = null;
   @Input() dayPlaceholder = 'Day';
   @Input() monthPlaceholder = 'Month';
   @Input() yearPlaceholder = 'Year';
@@ -79,22 +79,28 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
   }
 
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
+  get value(): Date { return this._value; }
+  set value(value: Date) {
+    this._value = this.coerceDateProperty(value);
   }
 
   @Input()
-  get min(): Date | null { return this._min; }
-  set min(value: Date | null) {
-    this._min = this.getValidDateOrNull(this.dateAdapter.deserialize(value));
+  get required(): boolean { return this._required; }
+  set required(required: boolean) {
+    this._required = coerceBooleanProperty(required);
+  }
+
+  @Input()
+  get min(): Date { return this._min; }
+  set min(min: Date) {
+    this._min = this.coerceDateProperty(this.dateAdapter.deserialize(min));
     this.validatorOnChange();
   }
 
   @Input()
-  get max(): Date | null { return this._max; }
-  set max(value: Date | null) {
-    this._max = this.getValidDateOrNull(this.dateAdapter.deserialize(value));
+  get max(): Date { return this._max; }
+  set max(max: Date) {
+    this._max = this.coerceDateProperty(this.dateAdapter.deserialize(max));
     this.validatorOnChange();
   }
 
@@ -125,11 +131,18 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
     return this.max ? this.max.getFullYear() : new Date().getFullYear() - 16;
   }
 
+  numberOfDays = 31;
+  selectedYear: number = null;
+  selectedMonth: number = null;
+
+  validationError = false;
+
   private _id: string;
+  private _value = null;
   private _required = false;
   private _errorState = false;
-  private _min: Date | null;
-  private _max: Date | null;
+  private _min: Date;
+  private _max: Date ;
   private _selectedDay: number = null;
   private previousDay: number = null;
 
@@ -139,16 +152,16 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
 
   private validators = new Map([
     ['simpleDatepickerMin',
-      (control: AbstractControl): ValidationErrors | null => {
-        const controlValue = this.getValidDateOrNull(this.dateAdapter.deserialize(control.value));
+      (control: AbstractControl): ValidationErrors => {
+        const controlValue = this.coerceDateProperty(this.dateAdapter.deserialize(control.value));
         return (!this.min || !controlValue ||
             this.dateAdapter.compareDate(this.min, controlValue) <= 0) ?
             null : {simpleDatepickerMin: {min: this.min, actual: controlValue}};
       }
     ],
     ['simpleDatepickerMax',
-      (control: AbstractControl): ValidationErrors | null => {
-        const controlValue = this.getValidDateOrNull(this.dateAdapter.deserialize(control.value));
+      (control: AbstractControl): ValidationErrors => {
+        const controlValue = this.coerceDateProperty(this.dateAdapter.deserialize(control.value));
         return (!this.max || !controlValue ||
             this.dateAdapter.compareDate(this.max, controlValue) >= 0) ?
             null : {simpleDatepickerMax: {max: this.max, actual: controlValue}};
@@ -156,27 +169,50 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
     ]
   ]);
 
-  numberOfDays = 31;
-  selectedYear: number = null;
-  selectedMonth: number = null;
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    public _defaultErrorStateMatcher: ErrorStateMatcher,
+    @Optional() _parentForm: NgForm,
+    @Optional() _parentFormGroup: FormGroupDirective,
+    @Self() @Optional() public ngControl: NgControl,
+    @Optional() public dateAdapter: DateAdapter<Date>) {
 
-  validationError = false;
+    super(_defaultErrorStateMatcher, _parentForm,
+          _parentFormGroup, ngControl);
 
-  private validatorOnChange = () => {};
+    if (this.ngControl) {
+      // Note: we provide the value accessor through here, instead of
+      // the `providers` to avoid running into a circular import.
+      this.ngControl.valueAccessor = this;
+      this.ngControl.control.setValidators(this.validator);
+      this.ngControl.control.updateValueAndValidity();
+    }
+
+    // Force setter to be called in case id was not specified.
+    this.id = this.id;
+
+    // Update the displayed date when the locale changes.
+    this.localeSubscription = dateAdapter.localeChanges.subscribe(() => {
+      this.value = this.value;
+    });
+  }
+
   propagateChange = (_: any) => {};
   propagateTouched = () => {};
 
-  // tslint:disable: member-ordering
+  private validatorOnChange = () => {};
+
+  /* eslint-disable @typescript-eslint/member-ordering */
   /** The form control validator for the min date. */
   private minValidator: ValidatorFn = this.validators.get('simpleDatepickerMin');
 
   /** The form control validator for the max date. */
   private maxValidator: ValidatorFn = this.validators.get('simpleDatepickerMax');
 
-  private validator: ValidatorFn | null =
+  private validator: ValidatorFn =
   Validators.compose([this.minValidator, this.maxValidator]);
 
-  private getValidDateOrNull(obj: any): Date | null {
+  private coerceDateProperty(obj: any): Date {
     return (this.dateAdapter.isDateInstance(obj) && this.dateAdapter.isValid(obj)) ? obj : null;
   }
 
@@ -218,7 +254,7 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
 
   emit() {
     if (this.selectedDay !== null && this.selectedMonth !== null && this.selectedYear !== null) {
-      if (this.getValidDateOrNull(this.value)) {
+      if (this.coerceDateProperty(this.value)) {
         this.value.setDate(this.selectedDay);
         this.value.setMonth(this.selectedMonth - 1);
         this.value.setFullYear(this.selectedYear);
@@ -232,7 +268,7 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
     this.propagateChange(this.value);
   }
 
-  validate(c: AbstractControl): ValidationErrors | null {
+  validate(c: AbstractControl): ValidationErrors {
     return this.validator ? this.validator(c) : null;
   }
 
@@ -253,7 +289,7 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
   }
 
   writeValue(value: Date) {
-    if (this.getValidDateOrNull(value)) {
+    if (this.coerceDateProperty(value)) {
       this.value = value;
       this.selectedDay = value.getDate();
       this.selectedMonth = value.getMonth();
@@ -278,33 +314,5 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
   ngOnDestroy() {
     this.localeSubscription.unsubscribe();
     this.stateChanges.complete();
-  }
-
-  constructor(
-    private cdRef: ChangeDetectorRef,
-    public _defaultErrorStateMatcher: ErrorStateMatcher,
-    @Optional() _parentForm: NgForm,
-    @Optional() _parentFormGroup: FormGroupDirective,
-    @Self() @Optional() public ngControl: NgControl,
-    @Optional() public dateAdapter: DateAdapter<Date>) {
-
-    super(_defaultErrorStateMatcher, _parentForm,
-          _parentFormGroup, ngControl);
-
-    if (this.ngControl) {
-      // Note: we provide the value accessor through here, instead of
-      // the `providers` to avoid running into a circular import.
-      this.ngControl.valueAccessor = this;
-      this.ngControl.control.setValidators(this.validator);
-      this.ngControl.control.updateValueAndValidity();
-    }
-
-    // Force setter to be called in case id was not specified.
-    this.id = this.id;
-
-    // Update the displayed date when the locale changes.
-    this.localeSubscription = dateAdapter.localeChanges.subscribe(() => {
-      this.value = this.value;
-    });
   }
 }
