@@ -37,7 +37,7 @@ const _SimpleDatepickerMixinBase:
   inputs: ['disabled'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  // tslint:disable-next-line: use-host-property-decorator
+  // eslint-disable-next-line
   host: {
     '[attr.id]': 'id',
     class: 'simple-datepicker',
@@ -166,7 +166,7 @@ implements CanDisable, ControlValueAccessor, CanUpdateErrorState, DoCheck, Valid
   propagateChange = (_: any) => {};
   propagateTouched = () => {};
 
-  // tslint:disable: member-ordering
+  /* eslint-disable @typescript-eslint/member-ordering */
   /** The form control validator for the min date. */
   private minValidator: ValidatorFn = this.validators.get('simpleDatepickerMin');
 
